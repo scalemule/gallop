@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallop Player - React Test</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 24px;
+    }
+    h1 { font-size: 24px; }
+    .info { color: #999; font-size: 14px; max-width: 600px; text-align: center; line-height: 1.6; }
+    pre {
+      background: #222; padding: 20px; border-radius: 8px;
+      max-width: 700px; width: 100%; overflow-x: auto;
+      font-size: 13px; line-height: 1.5;
+    }
+    code { color: #7ec8e3; }
+    .highlight { color: #e63946; }
+  </style>
+</head>
+<body>
+  <h1>Gallop Player - React Integration</h1>
+  <p class="info">
+    The React wrapper uses <code>&lt;GallopPlayer /&gt;</code> which directly instantiates
+    GallopPlayerCore on a div ref (no Web Component interop).
+  </p>
+
+  <pre><code><span class="highlight">import</span> { GallopPlayer } <span class="highlight">from</span> '@scalemule/gallop/react';
+
+<span class="highlight">function</span> VideoPage() {
+  <span class="highlight">return</span> (
+    &lt;<span class="highlight">GallopPlayer</span>
+      src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+      controls
+      onPlay={() =&gt; console.log('Playing')}
+      onPause={() =&gt; console.log('Paused')}
+      onError={(e) =&gt; console.error(e.code, e.message)}
+      onReady={() =&gt; console.log('Player ready')}
+      style={{ maxWidth: 800 }}
+    /&gt;
+  );
+}</code></pre>
+
+  <pre><code><span class="highlight">// With ref for imperative control</span>
+<span class="highlight">import</span> { useRef } <span class="highlight">from</span> 'react';
+<span class="highlight">import</span> { GallopPlayer, GallopPlayerHandle } <span class="highlight">from</span> '@scalemule/gallop/react';
+
+<span class="highlight">function</span> VideoWithControls() {
+  <span class="highlight">const</span> ref = useRef&lt;GallopPlayerHandle&gt;(null);
+
+  <span class="highlight">return</span> (
+    &lt;div&gt;
+      &lt;<span class="highlight">GallopPlayer</span> ref={ref} src="..." /&gt;
+      &lt;button onClick={() =&gt; ref.current?.play()}&gt;Play&lt;/button&gt;
+      &lt;button onClick={() =&gt; ref.current?.seek(30)}&gt;Skip to 30s&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+  <pre><code><span class="highlight">// Hook-based usage</span>
+<span class="highlight">import</span> { useGallopPlayer } <span class="highlight">from</span> '@scalemule/gallop/react';
+
+<span class="highlight">function</span> CustomPlayer() {
+  <span class="highlight">const</span> { containerRef, getPlayer } = useGallopPlayer({
+    src: 'https://example.com/video.m3u8',
+    apiKey: 'sm_live_xxx',
+    controls: true,
+  });
+
+  <span class="highlight">return</span> &lt;div ref={containerRef} style={{ maxWidth: 800 }} /&gt;;
+}</code></pre>
+
+  <pre><code><span class="highlight">// ScaleMule API integration</span>
+&lt;<span class="highlight">GallopPlayer</span>
+  videoId="abc-123-def"
+  apiKey="sm_live_your_key_here"
+  onReady={() =&gt; console.log('Loaded from ScaleMule API')}
+/&gt;</code></pre>
+</body>
+</html>

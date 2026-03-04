@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallop Player - UMD Test</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      gap: 32px;
+    }
+    h1 { font-size: 24px; font-weight: 600; }
+    h2 { font-size: 16px; font-weight: 400; color: #999; }
+    .player-container { width: 100%; max-width: 800px; }
+    .controls-panel {
+      width: 100%; max-width: 800px;
+      background: #222; border-radius: 8px; padding: 16px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .controls-panel button {
+      padding: 8px 16px; background: #333; color: #fff;
+      border: 1px solid #444; border-radius: 4px; cursor: pointer;
+      font-size: 13px;
+    }
+    .controls-panel button:hover { background: #444; }
+    .status {
+      width: 100%; max-width: 800px;
+      background: #222; border-radius: 8px; padding: 16px;
+      font-family: monospace; font-size: 12px; white-space: pre-wrap;
+      max-height: 200px; overflow-y: auto;
+    }
+    .input-row {
+      width: 100%; max-width: 800px;
+      display: flex; gap: 8px;
+    }
+    .input-row input {
+      flex: 1; padding: 8px 12px; background: #222; color: #fff;
+      border: 1px solid #444; border-radius: 4px; font-size: 13px;
+    }
+    .input-row button {
+      padding: 8px 16px; background: #e63946; color: #fff;
+      border: none; border-radius: 4px; cursor: pointer; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gallop Player - UMD Test</h1>
+  <h2>Web Component: &lt;gallop-player&gt;</h2>
+
+  <div class="input-row">
+    <input id="srcInput" type="text" placeholder="HLS URL (e.g. https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)"
+           value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">
+    <button onclick="loadSource()">Load</button>
+  </div>
+
+  <div class="player-container" id="playerContainer"></div>
+
+  <div class="controls-panel">
+    <button onclick="player?.play()">Play</button>
+    <button onclick="player?.pause()">Pause</button>
+    <button onclick="player?.seekBackward(10)">-10s</button>
+    <button onclick="player?.seekForward(10)">+10s</button>
+    <button onclick="player?.toggleMute()">Toggle Mute</button>
+    <button onclick="player?.toggleFullscreen()">Fullscreen</button>
+    <button onclick="player && (player.playbackRate = 2)">2x Speed</button>
+    <button onclick="player && (player.playbackRate = 1)">1x Speed</button>
+    <button onclick="player?.destroy(); player = null; log('Player destroyed')">Destroy</button>
+  </div>
+
+  <div class="status" id="log">Events will appear here...</div>
+
+  <script src="../dist/gallop.umd.global.js"></script>
+  <script>
+    let player = null;
+    const logEl = document.getElementById('log');
+
+    function log(msg) {
+      const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logEl.textContent = line + '\n' + logEl.textContent;
+    }
+
+    function loadSource() {
+      const src = document.getElementById('srcInput').value.trim();
+      if (!src) return;
+
+      if (player) {
+        player.destroy();
+      }
+
+      const container = document.getElementById('playerContainer');
+      container.innerHTML = '';
+
+      player = new Gallop.GallopPlayerCore(container, {
+        controls: true,
+        keyboard: true,
+        touch: true,
+      });
+
+      // Wire up events BEFORE loading source
+      player.on('play', () => log('Event: play'));
+      player.on('pause', () => log('Event: pause'));
+      player.on('ended', () => log('Event: ended'));
+      player.on('ready', () => log('Event: ready'));
+      player.on('error', (e) => log(`Event: error - ${e.code}: ${e.message}`));
+      player.on('statuschange', (e) => log(`Status: ${e.status}`));
+      player.on('qualitylevels', (e) => log(`Quality levels: ${e.levels.map(l => l.label).join(', ')}`));
+      player.on('qualitychange', (e) => log(`Quality changed: ${e.level.label}`));
+      player.on('volumechange', (e) => log(`Volume: ${(e.volume * 100).toFixed(0)}% muted=${e.muted}`));
+      player.on('fullscreenchange', (e) => log(`Fullscreen: ${e.isFullscreen}`));
+      player.on('ratechange', (e) => log(`Rate: ${e.rate}x`));
+
+      // Load source after events are wired
+      player.loadSource(src);
+
+      log(`Loaded source: ${src}`);
+    }
+
+    // Auto-load on page open
+    loadSource();
+  </script>
+</body>
+</html>
