@@ -7,6 +7,8 @@ export interface GallopConfig {
   src?: string;
   /** Poster image URL shown before playback */
   poster?: string;
+  /** Animated preview URL (WebP) — shown on hover before playback starts */
+  preview?: string;
   /** Base URL for the ScaleMule API */
   apiBaseUrl?: string;
   /** Show built-in controls (default: true) */
@@ -135,6 +137,7 @@ export interface VideoMetadata {
   title: string;
   duration: number;
   poster?: string;
+  preview?: string;
   playlistUrl: string;
   qualities: QualityLevel[];
 }

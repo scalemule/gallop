@@ -62,6 +62,7 @@ export class ScaleMuleClient {
       title: data.title ?? '',
       duration: data.duration ?? 0,
       poster: data.poster_url ?? data.thumbnail_url,
+      preview: data.preview_url,
       playlistUrl: data.playlist_url,
       qualities: (data.qualities ?? []).map((q: Record<string, unknown>, i: number) => ({
         index: i,

@@ -183,6 +183,9 @@ export class GallopPlayerCore extends EventEmitter implements GallopPlayer {
     if (this.config.poster) {
       this.posterImage.show(this.config.poster);
     }
+    if (this.config.preview && this.posterImage) {
+      this.posterImage.setPreview(this.config.preview);
+    }
   }
 
   private bindVideoEvents(): void {
@@ -268,6 +271,9 @@ export class GallopPlayerCore extends EventEmitter implements GallopPlayer {
       const metadata = await this.client.getVideoMetadata(videoId);
       if (metadata.poster && this.posterImage) {
         this.posterImage.show(metadata.poster);
+      }
+      if (this.posterImage) {
+        this.posterImage.setPreview(metadata.preview ?? null);
       }
       this.loadSource(metadata.playlistUrl);
     } catch (err) {
@@ -616,6 +622,7 @@ export class GallopPlayerCore extends EventEmitter implements GallopPlayer {
     this.touchManager?.destroy();
     this.contextMenu?.destroy();
     this.controls?.destroy();
+    this.posterImage?.destroy();
     void this.analyticsCollector?.destroy();
     this.engine?.destroy();
     this.state.reset();
