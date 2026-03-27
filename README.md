@@ -191,8 +191,6 @@ npm run typecheck    # TypeScript type checking
 ## Related Repos
 
 - **[scalemule-gallop](../scalemule-gallop)** - Core documentation (shared architecture)
-- **[scalemule-gallop-ios](../scalemule-gallop-ios)** - iOS SDK (Swift)
-- **[scalemule-gallop-android](../scalemule-gallop-android)** - Android SDK (Kotlin)
 
 ---
 
