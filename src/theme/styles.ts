@@ -16,11 +16,6 @@ export const PLAYER_STYLES = `
   -webkit-user-select: none;
   outline: none;
   line-height: 1.4;
-  /* Make this element a container-query context so overlay chrome can scale
-     against the player's own width, not the viewport. Keeps the big play
-     button (and other overlay sizing) visually proportional in both inline
-     240px chat bubbles and fullscreen presentations. */
-  container-type: inline-size;
 }
 
 .gallop-player * {
@@ -64,13 +59,15 @@ export const PLAYER_STYLES = `
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Scale against the player's inline size via container queries. Clamped so
-     it never shrinks below a tappable 44pt target or grows past ~12% of a
-     fullscreen viewport — which is still visually balanced on large screens
-     while staying compact for chat-sized inline players. */
-  width: clamp(56px, 14cqw, 160px);
-  height: clamp(38px, 10cqw, 112px);
-  border-radius: clamp(10px, 2.5cqw, 22px);
+  /* Scale against the player. Because .gallop-big-play is absolutely
+     positioned inside .gallop-player (position: relative), the % resolves
+     against the player's own width — no container-query context required,
+     which sidesteps the aspect-ratio regression that 0.0.5 introduced.
+     Clamped so it never drops below a tappable 56px target or grows past
+     ~12% of a fullscreen viewport. */
+  width: clamp(56px, 14%, 160px);
+  height: clamp(38px, 10%, 112px);
+  border-radius: clamp(10px, 2.5%, 22px);
   background: var(--gallop-color-primary, #635bff);
   border: none;
   cursor: pointer;
