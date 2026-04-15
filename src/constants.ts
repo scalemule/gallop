@@ -1,12 +1,12 @@
 import type { GallopConfig, GallopTheme } from './types';
 
 export const DEFAULT_THEME: GallopTheme = {
-  colorPrimary: '#635bff',
+  colorPrimary: '#3b82f6',
   colorSecondary: '#8b5cf6',
   colorText: '#ffffff',
   colorBackground: 'rgba(24, 24, 32, 0.92)',
   colorBuffered: 'rgba(255, 255, 255, 0.22)',
-  colorProgress: '#635bff',
+  colorProgress: '#3b82f6',
   controlBarBackground: 'rgba(0, 0, 0, 0.65)',
   controlBarHeight: '44px',
   borderRadius: '8px',
