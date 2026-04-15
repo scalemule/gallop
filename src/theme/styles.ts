@@ -59,41 +59,55 @@ export const PLAYER_STYLES = `
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Neutral dark circle — matches the YouTube / X style and stays visually
-     out of the way of host app brand palettes. Hosts that want a branded
-     fill can still override via the --gallop-big-play-bg custom property.
-     Size scales with the player via %, clamped both ends. Square aspect
-     so the circle stays round on every size. */
+  /* YouTube-style centered overlay button — solid brand color, fully opaque,
+     soft drop shadow for separation from any background. ScaleMule blue is
+     the default; hosts override via the --gallop-big-play-bg custom property
+     when they need to match their own palette. Size scales with the player
+     (clamped both ends) and the square aspect keeps the circle round. */
   width: clamp(52px, 12%, 88px);
   height: clamp(52px, 12%, 88px);
   border-radius: 50%;
-  background: var(--gallop-big-play-bg, rgba(0, 0, 0, 0.55));
+  background: var(--gallop-big-play-bg, #3b82f6);
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  opacity: 0.95;
-  transition: opacity 0.2s, transform 0.2s, background 0.2s;
+  opacity: 1;
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
   z-index: 4;
   padding: 0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.32);
 }
 
 .gallop-big-play:hover {
-  opacity: 1;
   transform: translate(-50%, -50%) scale(1.06);
-  background: var(--gallop-big-play-bg-hover, rgba(0, 0, 0, 0.72));
+  background: var(--gallop-big-play-bg-hover, #1d4ed8);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.42);
 }
 
 .gallop-big-play .gallop-icon {
-  /* 42% of the button so the triangle sits nicely centered inside the circle,
-     with a small right-shift (the play triangle is visually heavier on its
-     left edge). */
-  width: 42%;
-  height: 42%;
-  margin-left: 6%;
+  /* 40% of the button — perfectly centered. The play SVG path is already
+     visually balanced (M6.9..18.6 in a 24-unit viewBox), so no margin shim
+     is needed; previous versions over-corrected and made it look off-center. */
+  width: 40%;
+  height: 40%;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+/* Replay variant — same shape, dimmer fill so a finished video reads as
+   "completed" rather than "ready to start". */
+.gallop-big-play[data-mode="replay"] {
+  background: var(--gallop-big-play-bg-replay, rgba(0, 0, 0, 0.6));
+}
+.gallop-big-play[data-mode="replay"]:hover {
+  background: var(--gallop-big-play-bg-replay-hover, rgba(0, 0, 0, 0.78));
+}
+.gallop-big-play[data-mode="replay"] .gallop-icon {
+  /* The replay arrow is symmetric — slightly larger so it reads at a glance. */
+  width: 46%;
+  height: 46%;
 }
 
 .gallop-big-play[hidden] {
@@ -205,6 +219,16 @@ export const PLAYER_STYLES = `
 
 /* Hide controls during active playback (not paused/idle/ready/ended) */
 .gallop-player:not(:hover):not(:focus-within):not([data-status="paused"]):not([data-status="idle"]):not([data-status="ready"]):not([data-status="ended"]) .gallop-controls.gallop-controls-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* YouTube-embed parity: hide the bottom control bar entirely before first
+   playback. The big play button is the only chrome the user sees in the
+   idle / ready states. Once they click play, the existing fade rules above
+   take over (controls auto-hide during playback, reappear on hover/pause). */
+.gallop-player[data-status="idle"] .gallop-controls,
+.gallop-player[data-status="ready"] .gallop-controls {
   opacity: 0;
   pointer-events: none;
 }

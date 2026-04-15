@@ -604,6 +604,7 @@ export class GallopPlayerCore extends EventEmitter implements GallopPlayer {
     const status = this.state.status;
 
     this.bigPlayButton?.setVisible(status === 'idle' || status === 'ready' || status === 'paused' || status === 'ended');
+    this.bigPlayButton?.setMode(status === 'ended' ? 'replay' : 'play');
     this.loadingSpinner?.setVisible(status === 'loading' || status === 'buffering');
     this.errorOverlay?.setVisible(status === 'error');
 
