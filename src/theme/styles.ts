@@ -137,7 +137,7 @@ export const PLAYER_STYLES = `
   width: 100%;
   height: 100%;
   border: 3px solid rgba(255, 255, 255, 0.15);
-  border-top-color: var(--gallop-color-primary, #635bff);
+  border-top-color: var(--gallop-color-primary, #3b82f6);
   border-radius: 50%;
   animation: gallop-spin 0.8s linear infinite;
 }
@@ -185,7 +185,7 @@ export const PLAYER_STYLES = `
 
 .gallop-error-retry {
   padding: 10px 28px;
-  background: var(--gallop-color-primary, #635bff);
+  background: var(--gallop-color-primary, #3b82f6);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -308,7 +308,7 @@ export const PLAYER_STYLES = `
   left: 0;
   top: 0;
   height: 100%;
-  background: var(--gallop-color-progress, var(--gallop-color-primary, #635bff));
+  background: var(--gallop-color-progress, var(--gallop-color-primary, #3b82f6));
   border-radius: 2px;
   pointer-events: none;
 }
@@ -319,7 +319,7 @@ export const PLAYER_STYLES = `
   width: 12px;
   height: 12px;
   background: #fff;
-  border: 2px solid var(--gallop-color-primary, #635bff);
+  border: 2px solid var(--gallop-color-primary, #3b82f6);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
@@ -438,7 +438,7 @@ export const PLAYER_STYLES = `
 }
 
 .gallop-settings-item-active .gallop-icon {
-  color: var(--gallop-color-primary, #635bff);
+  color: var(--gallop-color-primary, #3b82f6);
 }
 
 .gallop-settings-value {
@@ -505,7 +505,7 @@ export const PLAYER_STYLES = `
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--gallop-color-primary, #635bff);
+  background: var(--gallop-color-primary, #3b82f6);
   flex-shrink: 0;
 }
 
