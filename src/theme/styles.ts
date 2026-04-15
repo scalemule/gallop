@@ -59,42 +59,41 @@ export const PLAYER_STYLES = `
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Scale against the player. Because .gallop-big-play is absolutely
-     positioned inside .gallop-player (position: relative), the % resolves
-     against the player's own width — no container-query context required,
-     which sidesteps the aspect-ratio regression that 0.0.5 introduced.
-     Clamped so it never drops below a tappable 56px target or grows past
-     ~12% of a fullscreen viewport. */
-  width: clamp(56px, 14%, 160px);
-  height: clamp(38px, 10%, 112px);
-  border-radius: clamp(10px, 2.5%, 22px);
-  background: var(--gallop-color-primary, #635bff);
+  /* Neutral dark circle — matches the YouTube / X style and stays visually
+     out of the way of host app brand palettes. Hosts that want a branded
+     fill can still override via the --gallop-big-play-bg custom property.
+     Size scales with the player via %, clamped both ends. Square aspect
+     so the circle stays round on every size. */
+  width: clamp(52px, 12%, 88px);
+  height: clamp(52px, 12%, 88px);
+  border-radius: 50%;
+  background: var(--gallop-big-play-bg, rgba(0, 0, 0, 0.55));
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  opacity: 0.92;
-  transition: opacity 0.25s, transform 0.25s, box-shadow 0.25s;
+  opacity: 0.95;
+  transition: opacity 0.2s, transform 0.2s, background 0.2s;
   z-index: 4;
   padding: 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .gallop-big-play:hover {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1.06);
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4);
+  background: var(--gallop-big-play-bg-hover, rgba(0, 0, 0, 0.72));
 }
 
 .gallop-big-play .gallop-icon {
-  /* 45% of the button so the play triangle always fills the same proportion
-     regardless of the player's current size. */
-  width: 45%;
-  height: 45%;
-  margin-left: 4%;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+  /* 42% of the button so the triangle sits nicely centered inside the circle,
+     with a small right-shift (the play triangle is visually heavier on its
+     left edge). */
+  width: 42%;
+  height: 42%;
+  margin-left: 6%;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
 }
 
 .gallop-big-play[hidden] {
