@@ -293,6 +293,8 @@ export class GallopPlayerCore extends EventEmitter implements GallopPlayer {
       this.engine = createEngine(
         { apiKey: this.config.apiKey, embedToken: this.config.embedToken },
         this.config.hlsConfig,
+        url,
+        this.config.mimeType,
       );
 
       this.engine.on('qualitylevels', (levels) => {

@@ -3,8 +3,22 @@ export interface GallopConfig {
   videoId?: string;
   /** ScaleMule API key for authenticated requests */
   apiKey?: string;
-  /** Direct HLS source URL (alternative to videoId) */
+  /**
+   * Direct source URL (alternative to videoId).
+   *
+   * Accepts either HLS manifests (`.m3u8`) for adaptive streaming, or
+   * progressive-download formats (mp4, webm, mov, ogg) — the engine
+   * factory inspects the URL (or `mimeType`) and picks HLS.js / native
+   * HLS / native file playback accordingly.
+   */
   src?: string;
+  /**
+   * MIME type hint for `src`. When the URL is ambiguous (e.g., presigned
+   * URLs without an extension), provide `application/vnd.apple.mpegurl`
+   * to force the HLS path, or `video/mp4` / `video/webm` / `video/quicktime`
+   * to force progressive-download playback.
+   */
+  mimeType?: string;
   /** Poster image URL shown before playback */
   poster?: string;
   /** Animated preview URL (WebP) — shown on hover before playback starts */
