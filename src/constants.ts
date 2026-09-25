@@ -39,7 +39,10 @@ export const DOUBLE_TAP_DELAY = 300;
 export const HLS_DEFAULT_CONFIG = {
   maxBufferLength: 30,
   maxMaxBufferLength: 60,
-  startLevel: -1,
+  // Decode the first low-bitrate fragment instead of discarding it as a bandwidth
+  // probe. ABR remains automatic and can upgrade after playback has started.
+  startLevel: 0,
+  testBandwidth: false,
   capLevelToPlayerSize: true,
   progressive: true,
 };
