@@ -197,3 +197,14 @@ npm run typecheck    # TypeScript type checking
 ## License
 
 Proprietary - ScaleMule, Inc.
+
+### Fast adaptive startup
+
+Gallop starts HLS playback on the lowest available rendition and immediately uses
+that first fragment for playback. It does not discard a trial fragment to measure
+bandwidth. Quality remains automatic and improves as bandwidth and player size
+allow. Applications can still choose an explicit `preferredQuality` or override
+`hlsConfig` for specialized streams.
+
+This default is shared by the JavaScript, React, custom-element, and hosted embed
+players. Existing applications should upgrade to `@scalemule/gallop@0.0.10`.
