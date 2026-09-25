@@ -167,6 +167,7 @@ export class Controls {
 
   destroy(): void {
     if (this.hideTimer) clearTimeout(this.hideTimer);
+    this.settingsMenu.destroy();
     this.progressBar.destroy();
     this.volumeControl.destroy();
     this.wrapper.removeEventListener('mousemove', this.onActivity);
