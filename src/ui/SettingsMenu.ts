@@ -12,6 +12,7 @@ export class SettingsMenu {
   private player: GallopPlayerCore;
   private currentView: MenuView = 'main';
   private qualityLevels: QualityLevel[] = [];
+  private resizeObserver: ResizeObserver;
 
   constructor(player: GallopPlayerCore) {
     this.player = player;
@@ -31,6 +32,8 @@ export class SettingsMenu {
     this.element.addEventListener('click', (e) => e.stopPropagation());
 
     this.renderMain();
+    this.resizeObserver = new ResizeObserver(() => this.updateBounds());
+    this.resizeObserver.observe(player.getWrapperElement());
   }
 
   setQualityLevels(levels: QualityLevel[]): void {
@@ -47,6 +50,7 @@ export class SettingsMenu {
       this.currentView = 'main';
       this.renderMain();
       this.element.hidden = false;
+      this.updateBounds();
     } else {
       this.element.hidden = true;
     }
@@ -55,6 +59,20 @@ export class SettingsMenu {
   close(): void {
     this.element.hidden = true;
     this.currentView = 'main';
+  }
+
+  private updateBounds(): void {
+    if (this.element.hidden) return;
+    const playerTop = this.player.getWrapperElement().getBoundingClientRect().top;
+    const buttonTop = this.button.getBoundingClientRect().top;
+    const margin = parseFloat(getComputedStyle(this.element).marginBottom) || 0;
+    // Keep every option reachable by scrolling inside even a short phone player.
+    const available = Math.max(0, buttonTop - playerTop - margin - 8);
+    this.element.style.maxHeight = `${Math.min(300, available)}px`;
+  }
+
+  destroy(): void {
+    this.resizeObserver.disconnect();
   }
 
   private renderMain(): void {
