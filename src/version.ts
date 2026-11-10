@@ -1,1 +1,1 @@
-export const GALLOP_VERSION = '0.0.11';
+export const GALLOP_VERSION = '0.0.12';
