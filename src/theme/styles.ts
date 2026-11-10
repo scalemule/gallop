@@ -64,10 +64,11 @@ export const PLAYER_STYLES = `
      the default; hosts override via the --gallop-big-play-bg custom property
      when they need to match their own palette. Size scales with the player
      (clamped both ends) and the square aspect keeps the circle round. */
-  width: clamp(52px, 12%, 88px);
-  height: clamp(52px, 12%, 88px);
+  width: var(--gallop-big-play-size, clamp(52px, 10%, 72px));
+  height: auto;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
-  background: var(--gallop-big-play-bg, #3b82f6);
+  background: var(--gallop-big-play-bg, var(--gallop-color-primary, #3b82f6));
   border: none;
   cursor: pointer;
   display: flex;
@@ -83,7 +84,7 @@ export const PLAYER_STYLES = `
 
 .gallop-big-play:hover {
   transform: translate(-50%, -50%) scale(1.06);
-  background: var(--gallop-big-play-bg-hover, #1d4ed8);
+  background: var(--gallop-big-play-bg-hover, var(--gallop-color-secondary, #1d4ed8));
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.42);
 }
 
@@ -92,7 +93,8 @@ export const PLAYER_STYLES = `
      visually balanced (M6.9..18.6 in a 24-unit viewBox), so no margin shim
      is needed; previous versions over-corrected and made it look off-center. */
   width: 40%;
-  height: 40%;
+  height: auto;
+  aspect-ratio: 1 / 1;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
 }
 
@@ -107,7 +109,8 @@ export const PLAYER_STYLES = `
 .gallop-big-play[data-mode="replay"] .gallop-icon {
   /* The replay arrow is symmetric — slightly larger so it reads at a glance. */
   width: 46%;
-  height: 46%;
+  height: auto;
+  aspect-ratio: 1 / 1;
 }
 
 .gallop-big-play[hidden] {
